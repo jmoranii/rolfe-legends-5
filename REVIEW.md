@@ -13,7 +13,7 @@ the short list to read first.
   - Cousin Card numbers: 0⚡, +2 Strong, Weak 2, cancels one attack.
   - The all-crops Jackpot fight is **the Veggie Medley** (a corn, a tomato, and an onion squished together).
   - Map stops: **Grampa Flaj's Seed Shed** (shop), **Mom's Snack Break** (rest), **Goldie's Gate** (treasure).
-  - **The ending:** the Huge Onion shrinks to a little onion and **Goldie eats it**.
+  - **The ending:** the farm settles and Goldie gets the last word. (Goldie eating the onion in the final fight was the boys' own ask, added after publish: DESIGN.md §14.)
   - **Harvest Levels 1–10** for after the first win.
 - **Saved cards:** shipped exactly as Wyatt said (leftover hand → next fight's hand, then draw 5). The harness shows it's strong but fair (hoarding beats normal play by under 5 points). No cap added.
 
