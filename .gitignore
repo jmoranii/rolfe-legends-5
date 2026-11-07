@@ -1,0 +1,13 @@
+assets/ref-photos/
+.DS_Store
+node_modules/
+assets/originals/
+assets/art-log.txt
+assets/art-state.json
+assets/audio/other-takes/
+assets/audio/gen-logs/
+assets/audio/tmp_*/
+test-results/
+media/
+__pycache__/
+docs/smoke/e2e/
