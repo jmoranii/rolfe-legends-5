@@ -4,7 +4,7 @@
 // Art + music = cache-first, filled lazily as fetched during play (precaching
 // the full set would punish the first visit; emoji/silence fallbacks already
 // handle anything not yet cached when offline). RL1 sw.js pattern.
-const CACHE = 'rolfe-legends-5-v2';
+const CACHE = 'rolfe-legends-5-v3';
 // Cache Storage is per-ORIGIN, not per-path: every Rolfe Legends game on
 // jmoranii.github.io shares ONE cache list. So activate may delete only this
 // game's own stale versions (same name, older vN), never a sibling game's

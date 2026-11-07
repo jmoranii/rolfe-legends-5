@@ -1052,3 +1052,16 @@ body:has(.combat) .coach-bubble { top: max(10px, env(safe-area-inset-top)); bott
 .look-w2 .enemy { background: rgba(90, 20, 10, .58); }
 .look-w3 .enemy { background: rgba(15, 10, 8, .62); }
 .enemy .nm, .enemy .hpnum { color: #fff; text-shadow: 0 1px 2px #000; }
+
+/* Goldie's snack: the final fight's last moment (the boys' ask) */
+.goldie-snack .snack-stage { position: absolute; inset: 0 0 26% 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.snack-onion { position: absolute; left: 50%; top: 50%; width: min(60vw, 320px); transform: translate(-50%, -50%) scale(1); transition: transform calc(var(--fx, 1) * .9s) cubic-bezier(.5,-0.3,.6,1.4), opacity .4s; }
+.snack-onion .art-slot, .snack-onion img { width: 100%; border-radius: 18px; font-size: 8rem; text-align: center; display: block; }
+.snack-onion.shrunk { transform: translate(-50%, 10%) scale(.28); }
+.snack-onion.eaten { opacity: 0; transform: translate(10%, 0) scale(.05); }
+.snack-goldie { position: absolute; right: -80%; top: 50%; width: min(78vw, 460px); transform: translateY(-50%); transition: right calc(var(--fx, 1) * 1.1s) ease-out; }
+.snack-goldie .art-slot, .snack-goldie img { width: 100%; border-radius: 18px; box-shadow: 0 8px 30px #0008; font-size: 8rem; text-align: center; display: block; }
+.snack-goldie.in { right: 6%; }
+.snack-goldie.chomp { animation: chomp .25s ease-in-out 3; }
+@keyframes chomp { 50% { transform: translateY(-50%) rotate(-4deg) scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { .snack-onion, .snack-goldie { transition: none; } .snack-goldie.chomp { animation: none; } }

@@ -220,6 +220,17 @@ async function mechanicsSuite(browserType, name) {
   ok(await page.locator('.hand .saved-glow').count() >= 1, `${name}: saved cards glow when the fight ends`);
   await page.waitForSelector('.victory-beat', { timeout: 6000 }).catch(() => {});
   ok(await page.locator('.coin-tally', { hasText: 'saved for next fight' }).count() === 1, `${name}: the tally counts saved cards`);
+  // --- the boys' ask: beat the Huge Onion's last form and Goldie eats it
+  await rl5(page, () => { window.__RL5.dev.start('aaron', 12, 3); window.__RL5.dev.fight(['huge_onion'], 'boss'); const C = window.__RL5.C; const st = window.__RL5.combat; const o = st.enemies[0]; for (let i = 0; i < 3; i++) C.dealDamage(st, o, 999, { isAttack: false, fromHero: true }); window.__RL5.dev.refresh(); });
+  await page.waitForSelector('.goldie-snack', { timeout: 6000 }).catch(() => {});
+  await okShot(page, await page.locator('.goldie-snack').count() === 1, `${name}: beating the Heart of the Onion brings Goldie`);
+  for (let i = 0; i < 3; i++) { await page.locator('.goldie-snack').click().catch(() => {}); await page.waitForTimeout(150); }
+  ok(await page.locator('.goldie-snack .ending-cap').textContent().then((t) => t.includes('CRUNCH')).catch(() => false), `${name}: CRUNCH — Goldie eats the onion`);
+  if (name.startsWith('chromium')) await shot(page, 'goldie-snack');
+  await page.locator('.goldie-snack').click().catch(() => {});
+  await page.locator('.goldie-snack').click().catch(() => {});
+  await page.waitForSelector('.boss-splash', { timeout: 8000 }).catch(() => {});
+  ok(await page.locator('.splash-big', { hasText: 'EATEN BY GOLDIE' }).count() === 1, `${name}: the victory screen says Goldie ate it`);
   ok(page._errors.length === 0, `${name}: mechanics — no page errors (${page._errors.slice(0, 2).join(' | ')})`);
   await browser.close();
 }
@@ -286,12 +297,11 @@ async function endingAndOffline(browserType, name) {
   await page.goto(BASE, { waitUntil: 'load' });
   await rl5(page, () => window.__RL5.dev.ending('aaron'));
   await okShot(page, await page.locator('.cutscene.ending-cut').count() === 1, `${name}: the ending cutscene`);
-  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('Huge Onion')), `${name}: shot 1 — the onion shrinks`);
+  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('Huge Onion gone')), `${name}: shot 1 — the farm settles`);
   await page.locator('.cutscene.ending-cut').click();
+  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('AARON')), `${name}: shot 2 — Aaron and his tractor`);
   await page.locator('.cutscene.ending-cut').click();
-  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('AARON')), `${name}: shot 3 — Aaron and his tractor`);
-  await page.locator('.cutscene.ending-cut').click();
-  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('Goldie')), `${name}: shot 4 — Goldie eats the onion`);
+  ok(await page.locator('.ending-cap').textContent().then((t) => t.includes('Goldie knows')), `${name}: shot 3 — Goldie knows`);
   if (name.startsWith('chromium')) await shot(page, 'ending');
   await page.locator('.cutscene-skip').click();
   const claimed = await page.waitForFunction(() => !!navigator.serviceWorker.controller, null, { timeout: 15000 }).then(() => true, () => false);

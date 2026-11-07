@@ -2,7 +2,7 @@
 // offline-safe, ≤20 s, ALWAYS skippable, replayable from the Movies menu.
 //   openingCutscene — Wyatt's opening: Savanah's car rumbles the soil, the crops SPROUT
 //   storyCard — each world's gate card
-//   endingCutscene — the Huge Onion peeled to nothing; Goldie's snack (the video plays first if present)
+//   endingCutscene — the farm settles after Goldie's snack (the snack itself plays in the final fight)
 // deps (from game.js): { el, artImg, bgLayer, sfx, REDUCED, fxScale, cardFace }
 
 import { sceneArt, endingArt, worldBg } from './art.js';
@@ -87,11 +87,9 @@ export function endingShots(hero) {
     liam: { img: 'end_3_liam', text: 'LIAM THE READER sits on his giant book and turns the page. 📚' },
   }[hero];
   return [
-    { img: 'end_1_peel', text: 'The last layer peels away… and the Huge Onion shrinks… and shrinks… to ONE little onion. 🧅', sound: 'pop' },
-    { img: 'end_2_settle', text: 'All over the farm, the crops calm down and settle back into the soil. 🌽🍅🌱', sound: 'heal' },
+    { img: 'end_2_settle', text: 'With the Huge Onion gone (thanks, Goldie!), the crops all over the farm calm down and settle back into the soil. 🌽🍅🌱', sound: 'heal' },
     heroShot,
-    { img: 'end_4_goldie', text: 'Then Goldie leans over her fence… and eats the little onion. CRUNCH. 🦙', sound: 'relic' },
-    { img: 'end_5_goldie', text: '"Goldie says nothing. Goldie knows." 🦙', sound: 'tap' },
+    { img: 'end_5_goldie', text: 'Goldie licks her lips. "Goldie says nothing. Goldie knows." 🦙', sound: 'relic' },
     { img: 'end_6_farm', text: 'The farm is safe. The crops are quiet. The LEGENDS win! 🏆', sound: 'win' },
   ];
 }

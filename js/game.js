@@ -1253,7 +1253,9 @@ function afterAction() {
       document.querySelectorAll('.hand .cardface').forEach((d, i) => { const c = combat.hand[i]; if (c && keep.has(c.uid)) { d.classList.add('saved-glow'); d.appendChild(el('div', 'card-tag tag-saved', '💾 Saved for next fight!')); } });
       // reduced motion drops the animation, never the information: the glow still shows briefly
       const ms = REDUCED ? (keep.size ? 900 : 0) : Math.round((combatKind === 'boss' ? 1900 : 1100) * fxScale());
-      setTimeout(() => { winPending = false; combatWon(); }, ms);
+      // the boys' ask: beat the Huge Onion's last form and Goldie comes and eats it
+      const finalOnion = combatKind === 'boss' && combat.enemies.some((e) => e.key === 'huge_onion');
+      setTimeout(() => { winPending = false; if (finalOnion) goldieSnack(combatWon); else combatWon(); }, ms);
       return;
     }
     sfx.lose();
@@ -1269,6 +1271,44 @@ function fadeOutThen(fn) {
   if (REDUCED || !cur) return fn();
   cur.classList.add('screen-fade-out');
   setTimeout(fn, Math.round(480 * fxScale()));
+}
+
+// ================================================================= GOLDIE'S SNACK (the boys' ask)
+// The Heart of the Onion is beaten → it shrinks to one little onion → Goldie the llama
+// walks in → CRUNCH. Tap to move along; skippable; reduced motion keeps every step, no motion.
+function goldieSnack(onDone) {
+  music.play(null);
+  const root = el('div', 'cutscene goldie-snack look-w3');
+  root.appendChild(bgLayer(A.worldBg(3, 'battle'), 'cutscene-bg'));
+  const stage = el('div', 'snack-stage');
+  const onion = el('div', 'snack-onion');
+  onion.appendChild(artImg(A.enemyArt('huge_onion_3'), '🧅', 'snack-onion-art'));
+  const goldie = el('div', 'snack-goldie');
+  goldie.appendChild(artImg(A.endingArt('end_4_goldie'), '🦙', 'snack-goldie-art'));
+  stage.append(onion, goldie);
+  const cap = el('div', 'cutscene-cap ending-cap show', 'The Heart of the Onion is beaten! It shrinks… and shrinks… 🧅');
+  root.append(stage, cap);
+  document.body.appendChild(root);
+  $app.innerHTML = '';
+  let step = 0, done = false, timer = 0;
+  const steps = [
+    () => { onion.classList.add('shrunk'); cap.innerHTML = '…until it\'s just ONE little onion. 🧅'; sfx.pop(); },
+    () => { goldie.classList.add('in'); cap.innerHTML = 'Wait… who\'s that? Here comes <b>GOLDIE</b>! 🦙'; sfx.tap(); },
+    () => { onion.classList.add('eaten'); goldie.classList.add('chomp'); cap.innerHTML = '<b>CRUNCH!</b> Goldie ate the onion! 🦙🧅'; sfx.crunch(); bigBanner('🦙 CRUNCH!', 'banner-jackpot'); },
+    () => { cap.innerHTML = '"Goldie says nothing. Goldie knows." 🦙'; sfx.relic(); },
+  ];
+  const finish = () => { if (done) return; done = true; clearTimeout(timer); root.remove(); onDone(); };
+  const next = () => {
+    if (step >= steps.length) return finish();
+    steps[step++]();
+    clearTimeout(timer);
+    timer = setTimeout(next, REDUCED ? 2600 : 2400);
+  };
+  const skip = el('button', 'cutscene-skip', 'skip ⏭');
+  skip.onclick = (ev) => { ev.stopPropagation(); finish(); };
+  root.appendChild(skip);
+  root.addEventListener('click', (ev) => { if (!ev.target.closest('.cutscene-skip')) next(); });
+  timer = setTimeout(next, REDUCED ? 1600 : 1800);
 }
 
 // ================================================================= AFTER A WIN
@@ -1354,12 +1394,13 @@ function showBossSplash(st, rewards) {
   }
   const W = WORLDS[run.world];
   s.prepend(bgLayer(A.worldBg(run.world, 'battle'), 'battle-bg'));
-  s.appendChild(artImg(A.enemyArt(W.bossKey), W.emoji, 'boss-intro-face'));
-  s.appendChild(el('h1', 'splash-big', `${W.boss.toUpperCase()}: HARVESTED!`));
+  const goldieAte = W.bossKey === 'huge_onion';
+  s.appendChild(artImg(goldieAte ? A.endingArt('end_5_goldie') : A.enemyArt(W.bossKey), goldieAte ? '🦙' : W.emoji, 'boss-intro-face'));
+  s.appendChild(el('h1', 'splash-big', goldieAte ? 'THE HUGE ONION: EATEN BY GOLDIE!' : `${W.boss.toUpperCase()}: HARVESTED!`));
   const LINES = {
     mega_corn: '"…I need to cool off." — the Mega Corn 🌽',
     ripe_tomato: '"Okay. Maybe I was a LITTLE too ripe." — the Ripe Tomato 🍅',
-    huge_onion: '"…sniff." — the Huge Onion 🧅',
+    huge_onion: '"…" — Goldie, chewing 🦙',
   };
   s.appendChild(el('div', 'speaker-line', LINES[W.bossKey]));
   s.appendChild(el('p', 'subtitle', `+💰${rewards.coins}`));
@@ -1677,6 +1718,7 @@ window.__RL5 = {
     victory() { if (!run) this.start('wyatt', 1, 3); showVictory(); },
     defeat() { if (!run) this.start(); combat = null; showDefeat(); },
     opening() { SC.openingCutscene(sceneDeps(), HEROES.wyatt.name, showTitle); },
+    goldie() { goldieSnack(showTitle); },
     ending(hero = 'wyatt') { SC.endingCutscene(sceneDeps(), hero, showTitle); },
     win() { if (combat) { for (const e of C.livingEnemies(combat)) { e.hp = 0; e.deathHandled = true; } C.checkCombatEnd(combat); afterAction(); } },
     refresh() { afterAction(); },

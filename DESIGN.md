@@ -165,3 +165,7 @@ The selfplay harness (720 runs) tuned the v1 numbers above. This section wins on
 - **After a big boss you heal back up** (RL4's rule). The v1 "50% of missing" was too punishing with the harder bosses; Harvest Level 5 now heals most of the way.
 - **Heroes:** HP Wyatt 80 / Aaron 82 / Liam 72. Pass deals 7, Juke Left 6 Block, Power Shot 5 + 5 per Touch. Aaron's Gear bonus is **+2** per gear (+3 made him much stronger than the others). Liam's starter is 4 Bonk / 3 Hide / 2 Read a Book / Bookmark (Big Words removed), and the Library Card starts each fight with **2 pages**.
 - **Harness result:** Wyatt 20.0% · Aaron 20.8% · Liam 22.9% (rails 17–27); Jackpot spin 23.6% vs walk past 18.9%; hoarding vs normal play within 5 points; every rail clear.
+
+## 14. Goldie's snack (the boys' ask, Sat 2026-11-07, after publish)
+
+"Since the onion has forms, can it be on the last form and you beat that, can Goldie (our llama) come and eat it?" (relayed by James). Shipped: beating the Heart of the Onion (its last layer) plays a short in-fight scene. The onion shrinks to one little onion, Goldie walks in, and CRUNCH, she eats it. The victory screen reads "THE HUGE ONION: EATEN BY GOLDIE!" The ending no longer repeats the snack; it opens with the farm settling ("thanks, Goldie!") and keeps "Goldie says nothing. Goldie knows."
